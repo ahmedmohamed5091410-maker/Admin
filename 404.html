@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 Page Not Found - Antigravity Admin</title>
+  <meta name="description" content="The page you requested does not exist on the Antigravity console.">
+  <link rel="stylesheet" href="variables.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="components.css">
+  <link rel="stylesheet" href="animations.css">
+  <link rel="stylesheet" href="responsive.css">
+  <!-- Lucide Icons CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/lucide/dist/umd/lucide.min.js"></script>
+</head>
+<body style="display: flex; align-items: center; justify-content: center; min-height: 100vh;">
+  <div class="card animate-fade-in-up" style="max-width: 480px; width: 90%; text-align: center; padding: 3rem 2rem; box-shadow: var(--shadow-xl);">
+    <div class="sidebar-logo" style="width: 56px; height: 56px; margin: 0 auto 1.5rem auto; font-size: 1.75rem; border-radius: var(--radius-md);">A</div>
+    
+    <h1 style="font-size: 5rem; font-weight: 800; line-height: 1; color: var(--primary); letter-spacing: -0.05em; margin-bottom: 0.5rem;">404</h1>
+    <h2 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 0.75rem;">Page not found</h2>
+    <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.5; margin-bottom: 2rem;">Sorry, we couldn’t find the page you’re looking for. It might have been moved or deleted.</p>
+    
+    <div class="flex-column" style="gap: 0.75rem;">
+      <a href="index.html" class="btn btn-primary" style="width: 100%; padding: 0.7rem;">
+        <i data-lucide="home" style="width:16px;"></i> Return to Dashboard
+      </a>
+      <a href="javascript:history.back()" class="btn btn-secondary" style="width: 100%; padding: 0.7rem;">
+        <i data-lucide="arrow-left" style="width:16px;"></i> Go Back
+      </a>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Sync theme settings if saved
+      const savedTheme = localStorage.getItem('admin_dashboard_settings');
+      if (savedTheme) {
+        try {
+          const s = JSON.parse(savedTheme);
+          if (s.theme) {
+            document.documentElement.setAttribute('data-theme', s.theme);
+          }
+        } catch (e) {}
+      }
+      if (window.lucide) {
+        window.lucide.createIcons();
+      }
+    });
+  </script>
+</body>
+</html>

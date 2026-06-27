@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Orders - Antigravity Admin</title>
+  <meta name="description" content="Manage transaction logs, review payment statuses, inspect customer addresses, and generate invoice reports.">
+  <link rel="stylesheet" href="variables.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="components.css">
+  <link rel="stylesheet" href="animations.css">
+  <link rel="stylesheet" href="responsive.css">
+  <!-- Lucide Icons CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/lucide/dist/umd/lucide.min.js"></script>
+  <style>
+    /* Printing styling overrides specifically for invoices */
+    @media print {
+      body * { display: none !important; }
+      #invoice-print-area, #invoice-print-area * { display: block !important; }
+      #invoice-print-area { position: absolute; left: 0; top: 0; width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Sidebar Placeholder -->
+    <div id="sidebar-placeholder"></div>
+
+    <main class="app-content">
+      <!-- Header Placeholder -->
+      <div id="header-placeholder"></div>
+
+      <div class="page-body animate-fade-in-up">
+        <!-- Header Title -->
+        <div class="flex-between">
+          <div>
+            <h2 style="font-size: 1.5rem; font-weight: 700;">Orders & Invoices</h2>
+            <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 0.25rem;">Inspect customer invoices, track shipping paths, and adjust fulfillment states.</p>
+          </div>
+          <div class="flex-row">
+            <button class="btn btn-secondary" id="export-orders-btn">
+              <i data-lucide="download"></i> Export Orders (CSV)
+            </button>
+          </div>
+        </div>
+
+        <!-- Filter Toolbar -->
+        <div class="card" style="padding: 1rem;">
+          <div class="flex-between" style="flex-wrap: wrap; gap: 1rem;">
+            <div class="flex-row" style="flex: 1; min-width: 250px;">
+              <!-- Search -->
+              <div class="search-box" style="width: 100%;">
+                <i data-lucide="search"></i>
+                <input type="text" id="orders-search" class="form-control" placeholder="Search by customer name or order ID...">
+              </div>
+            </div>
+            
+            <div class="flex-row" style="gap: 0.75rem; flex-wrap: wrap;">
+              <!-- Order fulfillment status filter -->
+              <select id="filter-order-status" class="form-control" style="width: 160px; cursor: pointer;">
+                <option value="all">All Fulfillment</option>
+                <option value="completed">Completed</option>
+                <option value="processing">Processing</option>
+                <option value="pending">Pending</option>
+                <option value="cancelled">Cancelled</option>
+              </select>
+
+              <!-- Payment status filter -->
+              <select id="filter-payment-status" class="form-control" style="width: 160px; cursor: pointer;">
+                <option value="all">All Payments</option>
+                <option value="paid">Paid</option>
+                <option value="unpaid">Unpaid</option>
+                <option value="refunded">Refunded</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Orders Table -->
+        <div class="table-responsive">
+          <table class="table" id="orders-table">
+            <thead>
+              <tr>
+                <th style="cursor: pointer;" data-sort="id">Order ID <i data-lucide="arrow-up-down" style="width: 12px; height: 12px; margin-left: 4px;"></i></th>
+                <th style="cursor: pointer;" data-sort="customerName">Customer Name <i data-lucide="arrow-up-down" style="width: 12px; height: 12px; margin-left: 4px;"></i></th>
+                <th>Purchased Items</th>
+                <th style="cursor: pointer;" data-sort="total">Total Value <i data-lucide="arrow-up-down" style="width: 12px; height: 12px; margin-left: 4px;"></i></th>
+                <th style="cursor: pointer;" data-sort="date">Order Date <i data-lucide="arrow-up-down" style="width: 12px; height: 12px; margin-left: 4px;"></i></th>
+                <th style="cursor: pointer;" data-sort="paymentStatus">Payment <i data-lucide="arrow-up-down" style="width: 12px; height: 12px; margin-left: 4px;"></i></th>
+                <th style="cursor: pointer;" data-sort="status">Fulfillment <i data-lucide="arrow-up-down" style="width: 12px; height: 12px; margin-left: 4px;"></i></th>
+                <th style="text-align: right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="orders-table-body">
+              <!-- Rendered dynamically -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination">
+          <div style="font-size: 0.85rem; color: var(--text-secondary);" id="pagination-info">
+            Showing 1-10 of 100 orders
+          </div>
+          <div class="pagination-numbers" id="pagination-controls">
+            <!-- Buttons dynamically generated -->
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Modals Section -->
+
+  <!-- Detailed Invoice Viewer Modal -->
+  <div class="modal-overlay" id="invoice-modal">
+    <div class="modal" style="max-width: 600px;">
+      <div class="modal-header">
+        <h3 class="modal-title">Invoice Details</h3>
+        <button class="btn btn-icon close-modal"><i data-lucide="x"></i></button>
+      </div>
+      <div class="modal-body" id="invoice-print-area">
+        <!-- Dynamic Invoice Card Layout -->
+        <div class="flex-between" style="border-bottom: 1px solid var(--border-color); padding-bottom: 1.5rem; margin-bottom: 1.5rem;">
+          <div>
+            <div class="flex-row" style="gap: 0.5rem; margin-bottom: 0.25rem;">
+              <div class="sidebar-logo">A</div>
+              <span style="font-weight: 700; font-size: 1.1rem;">Antigravity</span>
+            </div>
+            <p style="font-size: 0.8rem; color: var(--text-secondary);">Invoice System & Fullfillments</p>
+          </div>
+          <div style="text-align: right;">
+            <h4 style="font-size: 1.2rem; font-weight: 700; color: var(--primary);" id="invoice-id">#ORD-1001</h4>
+            <p style="font-size: 0.8rem; color: var(--text-muted);" id="invoice-date">Date: June 27, 2026</p>
+          </div>
+        </div>
+
+        <div class="grid-2" style="margin-bottom: 1.5rem;">
+          <div>
+            <h5 style="font-size: 0.8rem; font-weight: 600; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.5rem;">Billed To:</h5>
+            <p style="font-weight: 600; font-size: 0.9rem;" id="invoice-customer-name">Olivia Ryhe</p>
+            <p style="font-size: 0.8rem; color: var(--text-secondary);" id="invoice-customer-email">olivia@example.com</p>
+          </div>
+          <div>
+            <h5 style="font-size: 0.8rem; font-weight: 600; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.5rem;">Shipping Address:</h5>
+            <p style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.4;" id="invoice-shipping-address">123 Pine St, San Francisco, CA</p>
+          </div>
+        </div>
+
+        <div style="margin-bottom: 1.5rem;">
+          <h5 style="font-size: 0.8rem; font-weight: 600; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.5rem;">Purchase Summary:</h5>
+          <div style="border: 1px solid var(--border-color); border-radius: var(--radius-sm); overflow: hidden;">
+            <table class="table" style="background-color: transparent;">
+              <thead>
+                <tr>
+                  <th>Description</th>
+                  <th style="text-align: right;">Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td id="invoice-items-description">1x Wireless Headphones</td>
+                  <td style="text-align: right; font-weight: 600;" id="invoice-items-total">$299.99</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="flex-column" style="align-items: flex-end; gap: 0.5rem; border-top: 1px solid var(--border-color); padding-top: 1rem;">
+          <div class="flex-between" style="width: 200px; font-size: 0.85rem;">
+            <span style="color: var(--text-secondary);">Subtotal:</span>
+            <span style="font-weight: 500;" id="invoice-subtotal">$299.99</span>
+          </div>
+          <div class="flex-between" style="width: 200px; font-size: 0.85rem;">
+            <span style="color: var(--text-secondary);">Shipping (Standard):</span>
+            <span style="font-weight: 500;">$0.00</span>
+          </div>
+          <div class="flex-between" style="width: 200px; font-size: 1rem; border-top: 1px solid var(--border-color); padding-top: 0.5rem; font-weight: 700;">
+            <span>Total Amount:</span>
+            <span style="color: var(--primary);" id="invoice-grand-total">$299.99</span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <!-- Update Fulfillment Status Form inside Modal -->
+        <div class="flex-row" style="margin-right: auto; gap: 0.5rem; align-items: center;">
+          <span style="font-size: 0.8rem; font-weight: 600; color: var(--text-secondary);">Set Status:</span>
+          <select id="invoice-update-status-select" class="form-control" style="width: 130px; padding: 0.3rem 0.5rem; font-size: 0.8rem;">
+            <option value="pending">Pending</option>
+            <option value="processing">Processing</option>
+            <option value="completed">Completed</option>
+            <option value="cancelled">Cancelled</option>
+          </select>
+        </div>
+        <button type="button" class="btn btn-secondary" id="invoice-print-btn"><i data-lucide="printer"></i> Print Invoice</button>
+        <button type="button" class="btn btn-primary close-modal">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main scripts -->
+  <script type="module" src="app.js"></script>
+  <script type="module" src="orders.js"></script>
+</body>
+</html>

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - Antigravity Admin</title>
+  <meta name="description" content="Antigravity Enterprise Admin Dashboard overview page.">
+  <link rel="stylesheet" href="variables.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="components.css">
+  <link rel="stylesheet" href="animations.css">
+  <link rel="stylesheet" href="responsive.css">
+  <!-- Lucide Icons CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/lucide/dist/umd/lucide.min.js"></script>
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Sidebar Placeholder -->
+    <div id="sidebar-placeholder"></div>
+
+    <!-- Main Content App area -->
+    <main class="app-content">
+      <!-- Header Placeholder -->
+      <div id="header-placeholder"></div>
+
+      <div class="page-body animate-fade-in-up">
+        <!-- Welcome Section -->
+        <div class="flex-between">
+          <div>
+            <h2 style="font-size: 1.5rem; font-weight: 700;">Welcome back, <span id="welcome-user-name">Admin</span>!</h2>
+            <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 0.25rem;">Here is what is happening with your store today.</p>
+          </div>
+          <div class="flex-row">
+            <span class="badge badge-info" id="current-date-badge" style="font-weight: 500; font-size: 0.85rem; padding: 0.5rem 1rem;">June 27, 2026</span>
+          </div>
+        </div>
+
+        <!-- Draggable Statistics Cards Grid -->
+        <div class="grid-4" id="stats-widgets-container">
+          <!-- Revenue Card -->
+          <div class="card stat-card draggable-widget" draggable="true" id="widget-revenue">
+            <div class="stat-header">
+              <span>Total Revenue</span>
+              <div class="stat-icon"><i data-lucide="dollar-sign"></i></div>
+            </div>
+            <div class="stat-value" id="stat-revenue" data-is-currency="true">$0.00</div>
+            <div class="stat-change up">
+              <i data-lucide="trending-up" style="width: 14px; height: 14px;"></i>
+              <span>+12.4% vs last month</span>
+            </div>
+          </div>
+
+          <!-- Sales Card -->
+          <div class="card stat-card draggable-widget" draggable="true" id="widget-sales">
+            <div class="stat-header">
+              <span>Sales Volume</span>
+              <div class="stat-icon" style="color: var(--success); background-color: var(--success-soft);"><i data-lucide="credit-card"></i></div>
+            </div>
+            <div class="stat-value" id="stat-sales">0</div>
+            <div class="stat-change up">
+              <i data-lucide="trending-up" style="width: 14px; height: 14px;"></i>
+              <span>+8.2% vs last month</span>
+            </div>
+          </div>
+
+          <!-- Orders Card -->
+          <div class="card stat-card draggable-widget" draggable="true" id="widget-orders">
+            <div class="stat-header">
+              <span>Active Orders</span>
+              <div class="stat-icon" style="color: var(--warning); background-color: var(--warning-soft);"><i data-lucide="shopping-cart"></i></div>
+            </div>
+            <div class="stat-value" id="stat-orders">0</div>
+            <div class="stat-change down">
+              <i data-lucide="trending-down" style="width: 14px; height: 14px;"></i>
+              <span>-3.1% vs last week</span>
+            </div>
+          </div>
+
+          <!-- Customers Card -->
+          <div class="card stat-card draggable-widget" draggable="true" id="widget-customers">
+            <div class="stat-header">
+              <span>Active Customers</span>
+              <div class="stat-icon" style="color: var(--info); background-color: var(--info-soft);"><i data-lucide="users"></i></div>
+            </div>
+            <div class="stat-value" id="stat-customers">0</div>
+            <div class="stat-change up">
+              <i data-lucide="trending-up" style="width: 14px; height: 14px;"></i>
+              <span>+15.3% vs last quarter</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="grid-3">
+          <!-- Main Revenue Chart -->
+          <div class="card" style="grid-column: span 2; min-height: 400px; display: flex; flex-direction: column;">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">Revenue & Sales Performance</h3>
+                <p class="card-description">Daily performance logs of receipts and conversions.</p>
+              </div>
+              <div class="flex-row">
+                <span class="badge badge-success">Live</span>
+              </div>
+            </div>
+            <div style="flex: 1; min-height: 0; position: relative;">
+              <canvas id="dashboard-revenue-chart"></canvas>
+            </div>
+          </div>
+
+          <!-- Traffic Sources Chart -->
+          <div class="card" style="display: flex; flex-direction: column; min-height: 400px;">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">Traffic Channels</h3>
+                <p class="card-description">Breakdown of site entry points.</p>
+              </div>
+            </div>
+            <div style="flex: 1; min-height: 0; position: relative;">
+              <canvas id="dashboard-traffic-chart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Details Grid -->
+        <div class="grid-3">
+          <!-- Latest Orders -->
+          <div class="card" style="grid-column: span 2;">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">Latest Orders</h3>
+                <p class="card-description">Recently completed and processing transactions.</p>
+              </div>
+              <a href="orders.html" class="btn btn-secondary" style="font-size: 0.8rem; padding: 0.4rem 0.8rem;">View All</a>
+            </div>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Order ID</th>
+                    <th>Customer</th>
+                    <th>Items Purchased</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="dashboard-orders-table">
+                  <!-- JS Injected Rows -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Quick Actions & Top Products -->
+          <div class="flex-column">
+            <!-- Quick Actions -->
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Quick Actions</h3>
+              </div>
+              <div class="flex-column" style="gap: 0.75rem;">
+                <a href="users.html?action=add" class="btn btn-secondary" style="justify-content: flex-start; width: 100%;">
+                  <i data-lucide="user-plus" style="width: 16px;"></i> Add New User Account
+                </a>
+                <a href="products.html?action=add" class="btn btn-secondary" style="justify-content: flex-start; width: 100%;">
+                  <i data-lucide="package-plus" style="width: 16px;"></i> Add Catalog Product
+                </a>
+                <a href="analytics.html" class="btn btn-primary" style="justify-content: flex-start; width: 100%;">
+                  <i data-lucide="pie-chart" style="width: 16px;"></i> Deep Analytics Report
+                </a>
+              </div>
+            </div>
+
+            <!-- Top Products -->
+            <div class="card" style="flex: 1;">
+              <div class="card-header">
+                <h3 class="card-title">Top Selling Products</h3>
+              </div>
+              <div class="flex-column" id="dashboard-top-products" style="gap: 1rem;">
+                <!-- JS Injected List -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Activities & Notifications -->
+        <div class="grid-2">
+          <!-- Recent Activity Log (Timeline) -->
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Recent System Activities</h3>
+            </div>
+            <div class="timeline" id="dashboard-activities-timeline">
+              <!-- Timeline JS Injected -->
+            </div>
+          </div>
+
+          <!-- Recent Notifications -->
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Inbox Notifications</h3>
+              <a href="notifications.html" class="btn btn-secondary" style="font-size:0.8rem; padding: 0.4rem 0.8rem;">Open Center</a>
+            </div>
+            <div class="flex-column" id="dashboard-notifications-list" style="gap: 0.75rem;">
+              <!-- Notifications list items -->
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Main scripts -->
+  <script type="module" src="app.js"></script>
+  <script type="module" src="dashboard.js"></script>
+</body>
+</html>

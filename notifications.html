@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notification Center - Antigravity Admin</title>
+  <meta name="description" content="View system security alerts, stock logs, order invoices, and message status updates in a centralized notification center.">
+  <link rel="stylesheet" href="variables.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="components.css">
+  <link rel="stylesheet" href="animations.css">
+  <link rel="stylesheet" href="responsive.css">
+  <!-- Lucide Icons CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/lucide/dist/umd/lucide.min.js"></script>
+  <style>
+    .notif-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      padding: 1.25rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-color);
+      background-color: var(--card-bg);
+      transition: all var(--transition-fast);
+      position: relative;
+    }
+    .notif-card.unread {
+      border-left: 4px solid var(--primary);
+      background-color: var(--primary-soft);
+    }
+    .notif-card:hover {
+      box-shadow: var(--shadow-sm);
+      border-color: var(--border-hover);
+    }
+  </style>
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Sidebar Placeholder -->
+    <div id="sidebar-placeholder"></div>
+
+    <main class="app-content">
+      <!-- Header Placeholder -->
+      <div id="header-placeholder"></div>
+
+      <div class="page-body animate-fade-in-up">
+        <!-- Header Title -->
+        <div class="flex-between">
+          <div>
+            <h2 style="font-size: 1.5rem; font-weight: 700;">System Logs & Notifications</h2>
+            <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 0.25rem;">Monitor security warnings, order tracking logs, and server performance reports.</p>
+          </div>
+          <div class="flex-row">
+            <button class="btn btn-secondary" id="notifs-mark-read-all-btn">
+              <i data-lucide="check-check"></i> Mark All as Read
+            </button>
+            <button class="btn btn-danger" id="notifs-clear-all-btn">
+              <i data-lucide="trash-2"></i> Clear All Logs
+            </button>
+          </div>
+        </div>
+
+        <!-- Categories Tabs -->
+        <div class="tabs" id="notifs-tabs-container">
+          <button class="tab-btn active" data-category="all">All Logs</button>
+          <button class="tab-btn" data-category="order">Orders</button>
+          <button class="tab-btn" data-category="info">System Info</button>
+          <button class="tab-btn" data-category="warning">Warnings</button>
+          <button class="tab-btn" data-category="security">Security Alerts</button>
+        </div>
+
+        <!-- Notifications List -->
+        <div class="flex-column" id="notifs-list-container" style="gap: 1rem;">
+          <!-- Injected dynamically -->
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Main scripts -->
+  <script type="module" src="app.js"></script>
+  <script type="module" src="notifications.js"></script>
+</body>
+</html>

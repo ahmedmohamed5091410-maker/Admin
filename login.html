@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Antigravity Admin</title>
+  <meta name="description" content="Secure login access to the Antigravity Admin dashboard.">
+  <link rel="stylesheet" href="variables.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="components.css">
+  <link rel="stylesheet" href="animations.css">
+  <link rel="stylesheet" href="responsive.css">
+  <!-- Lucide Icons CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/lucide/dist/umd/lucide.min.js"></script>
+  <style>
+    .login-container {
+      display: flex;
+      min-height: 100vh;
+      width: 100vw;
+    }
+    .login-art {
+      flex: 1.2;
+      background: linear-gradient(135deg, var(--primary), #8b5cf6);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 3rem;
+      color: white;
+    }
+    .login-form-area {
+      flex: 1;
+      background-color: var(--card-bg);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 4rem;
+      max-width: 550px;
+      width: 100%;
+    }
+    @media (max-width: 900px) {
+      .login-art { display: none; }
+      .login-form-area { max-width: 100%; padding: 2rem; }
+    }
+    .password-wrapper {
+      position: relative;
+    }
+    .password-toggle {
+      position: absolute;
+      right: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <!-- Left graphic bar -->
+    <div class="login-art">
+      <div class="flex-row">
+        <div class="sidebar-logo" style="background: white; color: var(--primary);">A</div>
+        <span style="font-weight: 700; font-size: 1.25rem;">Antigravity</span>
+      </div>
+      <div>
+        <h2 style="font-size: 2.25rem; font-weight: 700; margin-bottom: 1rem; line-height: 1.2;">The complete management system for scaling teams.</h2>
+        <p style="opacity: 0.9; line-height: 1.5;">Monitor sales volume, manage user controls, inspect inventories, and coordinate communication within a unified platform built for speed.</p>
+      </div>
+      <div style="font-size: 0.85rem; opacity: 0.7;">
+        &copy; 2026 Antigravity Systems Inc. All rights reserved.
+      </div>
+    </div>
+    
+    <!-- Right login area -->
+    <div class="login-form-area">
+      <div style="margin-bottom: 2.5rem;">
+        <h1 style="font-size: 1.75rem; font-weight: 700; margin-bottom: 0.5rem;">Welcome back</h1>
+        <p style="color: var(--text-secondary); font-size: 0.9rem;">Sign in to access your administrative dashboard.</p>
+      </div>
+      
+      <form id="login-form" novalidate>
+        <div class="form-group">
+          <label class="form-label" for="login-email">Email Address</label>
+          <input type="email" id="login-email" class="form-control" placeholder="admin@example.com" required autocomplete="email">
+        </div>
+        
+        <div class="form-group" style="margin-bottom: 0.75rem;">
+          <div class="flex-between" style="width: 100%; margin-bottom: 0.35rem;">
+            <label class="form-label" for="login-password" style="margin-bottom: 0;">Password</label>
+            <a href="#" id="forgot-password-link" style="font-size: 0.8rem; color: var(--primary); text-decoration: none; font-weight: 500;">Forgot password?</a>
+          </div>
+          <div class="password-wrapper">
+            <input type="password" id="login-password" class="form-control" placeholder="••••••••" required autocomplete="current-password">
+            <button type="button" class="password-toggle" id="password-visibility-toggle">
+              <i data-lucide="eye" style="width: 18px; height: 18px;"></i>
+            </button>
+          </div>
+        </div>
+        
+        <div class="form-group" style="flex-direction: row; align-items: center; gap: 0.5rem; margin-bottom: 2rem;">
+          <input type="checkbox" id="remember-me" class="table-checkbox">
+          <label for="remember-me" class="form-label" style="margin-bottom: 0; cursor: pointer; user-select: none;">Keep me signed in for 30 days</label>
+        </div>
+        
+        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.75rem; font-weight: 600;">
+          Sign In
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script type="module" src="login.js"></script>
+</body>
+</html>

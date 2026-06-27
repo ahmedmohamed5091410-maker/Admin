@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inbox Messages - Antigravity Admin</title>
+  <meta name="description" content="Antigravity Inbox Messages chat system. Connect with team managers, review system notifications, and reply instantly.">
+  <link rel="stylesheet" href="variables.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="components.css">
+  <link rel="stylesheet" href="animations.css">
+  <link rel="stylesheet" href="responsive.css">
+  <!-- Lucide Icons CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/lucide/dist/umd/lucide.min.js"></script>
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Sidebar Placeholder -->
+    <div id="sidebar-placeholder"></div>
+
+    <main class="app-content">
+      <!-- Header Placeholder -->
+      <div id="header-placeholder"></div>
+
+      <div class="page-body animate-fade-in-up" style="padding-bottom: 1rem;">
+        <!-- Chat UI Container -->
+        <div class="chat-container">
+          <!-- Chat Sidebar -->
+          <div class="chat-sidebar">
+            <div class="dropdown-header" style="border-bottom: 1px solid var(--border-color); padding: 1rem;">
+              <div class="search-box" style="width: 100%;">
+                <i data-lucide="search"></i>
+                <input type="text" id="chats-search" class="form-control" placeholder="Search conversations...">
+              </div>
+            </div>
+            
+            <div class="chat-list" id="chat-threads-container">
+              <!-- Chat Threads injected by JS -->
+            </div>
+          </div>
+
+          <!-- Chat Conversation Main Area -->
+          <div class="chat-main" id="chat-messages-area" style="display: none;">
+            <!-- Chat Header -->
+            <div class="chat-header">
+              <div class="flex-row" style="gap: 0.75rem;">
+                <img src="" id="chat-active-avatar" class="avatar">
+                <div>
+                  <h4 id="chat-active-name" style="font-size: 0.95rem; font-weight: 700;">Phoenix Baker</h4>
+                  <span style="font-size: 0.75rem; color: var(--success); font-weight: 500;">Active Now</span>
+                </div>
+              </div>
+              <div class="flex-row" style="gap: 0.5rem;">
+                <button class="btn btn-icon" title="Start voice call (mock)"><i data-lucide="phone" style="width: 18px; height: 18px;"></i></button>
+                <button class="btn btn-icon" title="Start video call (mock)"><i data-lucide="video" style="width: 18px; height: 18px;"></i></button>
+              </div>
+            </div>
+
+            <!-- Messages Timeline -->
+            <div class="chat-messages-scroll" id="chat-messages-scroll">
+              <!-- Injected by JS -->
+            </div>
+
+            <!-- Send Input box -->
+            <form id="chat-send-form" class="chat-input-area">
+              <input type="text" id="chat-message-input" class="form-control" placeholder="Type a message..." autocomplete="off" required>
+              <button type="submit" class="btn btn-primary">
+                <i data-lucide="send" style="width:16px;"></i> Send
+              </button>
+            </form>
+          </div>
+
+          <!-- Empty State (No Active chat selected) -->
+          <div class="chat-main" id="chat-empty-state" style="justify-content: center; align-items: center; text-align: center; padding: 2rem;">
+            <i data-lucide="message-square" style="width: 64px; height: 64px; color: var(--text-muted); margin-bottom: 1rem;"></i>
+            <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.25rem;">Your Inbox</h3>
+            <p style="color: var(--text-secondary); font-size: 0.9rem; max-width: 320px;">Select a thread on the sidebar list to inspect recent logs and send replies.</p>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Main scripts -->
+  <script type="module" src="app.js"></script>
+  <script type="module" src="messages.js"></script>
+</body>
+</html>

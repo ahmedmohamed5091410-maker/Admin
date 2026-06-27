@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Profile - Antigravity Admin</title>
+  <meta name="description" content="Update administrator details, change passwords, and inspect activity logs.">
+  <link rel="stylesheet" href="variables.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="components.css">
+  <link rel="stylesheet" href="animations.css">
+  <link rel="stylesheet" href="responsive.css">
+  <!-- Lucide Icons CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/lucide/dist/umd/lucide.min.js"></script>
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Sidebar Placeholder -->
+    <div id="sidebar-placeholder"></div>
+
+    <main class="app-content">
+      <!-- Header Placeholder -->
+      <div id="header-placeholder"></div>
+
+      <div class="page-body animate-fade-in-up">
+        <!-- Header Title -->
+        <div>
+          <h2 style="font-size: 1.5rem; font-weight: 700;">Account Profile</h2>
+          <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 0.25rem;">Adjust personal settings, update email records, and manage password keys.</p>
+        </div>
+
+        <div class="grid-3" style="align-items: flex-start;">
+          <!-- Profile Left Summary Card -->
+          <div class="card flex-column" style="align-items: center; text-align: center; gap: 1rem;">
+            <div style="position: relative;">
+              <img src="" id="profile-avatar-display" class="avatar" style="width: 100px; height: 100px; border-radius: var(--radius-full); object-fit: cover; border: 2px solid var(--primary);">
+              <label for="profile-avatar-upload" style="position: absolute; bottom: 0; right: 0; background-color: var(--primary); color: white; padding: 6px; border-radius: var(--radius-full); cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-md);" title="Upload new photo">
+                <i data-lucide="camera" style="width: 14px; height: 14px;"></i>
+              </label>
+              <input type="file" id="profile-avatar-upload" style="display: none;" accept="image/*">
+            </div>
+            
+            <div>
+              <h3 id="profile-name-display" style="font-size: 1.15rem; font-weight: 700;">Olivia Ryhe</h3>
+              <p id="profile-email-display" style="font-size: 0.8rem; color: var(--text-muted);">admin@example.com</p>
+            </div>
+            
+            <div class="flex-row">
+              <span class="badge badge-info" id="profile-role-display">Administrator</span>
+              <span class="badge badge-success">Active Account</span>
+            </div>
+          </div>
+
+          <!-- Forms Right Cards (Takes 2 grid columns) -->
+          <div class="flex-column" style="grid-column: span 2; gap: 1.5rem;">
+            <!-- Profile Info Form -->
+            <div class="card">
+              <div class="card-header" style="margin-bottom: 1.5rem;">
+                <h3 class="card-title">Profile Information</h3>
+              </div>
+              <form id="profile-info-form">
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label" for="profile-name">Full Name</label>
+                    <input type="text" id="profile-name" class="form-control" required>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="profile-email">Email Address</label>
+                    <input type="email" id="profile-email" class="form-control" required autocomplete="email">
+                  </div>
+                </div>
+                <div style="text-align: right; margin-top: 1rem;">
+                  <button type="submit" class="btn btn-primary">Save Profile Info</button>
+                </div>
+              </form>
+            </div>
+
+            <!-- Password Security Form -->
+            <div class="card">
+              <div class="card-header" style="margin-bottom: 1.5rem;">
+                <h3 class="card-title">Security & Password</h3>
+              </div>
+              <form id="profile-password-form">
+                <div class="form-group">
+                  <label class="form-label" for="pass-current">Current Password</label>
+                  <input type="password" id="pass-current" class="form-control" required placeholder="••••••••">
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label" for="pass-new">New Password</label>
+                    <input type="password" id="pass-new" class="form-control" required placeholder="••••••••">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="pass-confirm">Confirm New Password</label>
+                    <input type="password" id="pass-confirm" class="form-control" required placeholder="••••••••">
+                  </div>
+                </div>
+                <div style="text-align: right; margin-top: 1rem;">
+                  <button type="submit" class="btn btn-primary">Update Password</button>
+                </div>
+              </form>
+            </div>
+
+            <!-- Activity History Logs Timeline -->
+            <div class="card">
+              <div class="card-header" style="margin-bottom: 1.5rem;">
+                <h3 class="card-title">Recent Activity Logs</h3>
+              </div>
+              <div class="timeline" id="profile-activity-timeline">
+                <!-- Injected dynamically -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Main scripts -->
+  <script type="module" src="app.js"></script>
+  <script type="module" src="profile.js"></script>
+</body>
+</html>

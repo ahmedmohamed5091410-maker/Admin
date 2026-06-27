@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Users - Antigravity Admin</title>
+  <meta name="description" content="Manage user permissions, review admin list, edit roles, and perform bulk operations.">
+  <link rel="stylesheet" href="variables.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="components.css">
+  <link rel="stylesheet" href="animations.css">
+  <link rel="stylesheet" href="responsive.css">
+  <!-- Lucide Icons CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/lucide/dist/umd/lucide.min.js"></script>
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Sidebar Placeholder -->
+    <div id="sidebar-placeholder"></div>
+
+    <main class="app-content">
+      <!-- Header Placeholder -->
+      <div id="header-placeholder"></div>
+
+      <div class="page-body animate-fade-in-up">
+        <!-- Breadcrumb / Header Title -->
+        <div class="flex-between">
+          <div>
+            <h2 style="font-size: 1.5rem; font-weight: 700;">User Management</h2>
+            <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 0.25rem;">Create, edit, delete, and control accessibility levels of system admins.</p>
+          </div>
+          <div class="flex-row">
+            <button class="btn btn-secondary" id="import-users-btn">
+              <i data-lucide="upload"></i> Import Data
+            </button>
+            <div class="dropdown-container">
+              <button class="btn btn-secondary" id="export-dropdown-btn">
+                <i data-lucide="download"></i> Export <i data-lucide="chevron-down" style="width: 14px; height: 14px;"></i>
+              </button>
+              <div class="dropdown-menu" style="width: 150px;">
+                <button class="dropdown-item" id="export-csv"><i data-lucide="file-spreadsheet"></i> CSV Format</button>
+                <button class="dropdown-item" id="export-print"><i data-lucide="printer"></i> Print View</button>
+              </div>
+            </div>
+            <button class="btn btn-primary" id="add-user-btn">
+              <i data-lucide="plus"></i> Add User
+            </button>
+          </div>
+        </div>
+
+        <!-- Filter Toolbar -->
+        <div class="card" style="padding: 1rem;">
+          <div class="flex-between" style="flex-wrap: wrap; gap: 1rem;">
+            <div class="flex-row" style="flex: 1; min-width: 250px;">
+              <!-- Search -->
+              <div class="search-box" style="width: 100%;">
+                <i data-lucide="search"></i>
+                <input type="text" id="users-search" class="form-control" placeholder="Search by name or email...">
+              </div>
+            </div>
+            
+            <div class="flex-row" style="gap: 0.75rem; flex-wrap: wrap;">
+              <!-- Role filter -->
+              <select id="filter-role" class="form-control" style="width: 150px; cursor: pointer;">
+                <option value="all">All Roles</option>
+                <option value="Administrator">Administrators</option>
+                <option value="Editor">Editors</option>
+                <option value="Viewer">Viewers</option>
+              </select>
+
+              <!-- Status filter -->
+              <select id="filter-status" class="form-control" style="width: 150px; cursor: pointer;">
+                <option value="all">All Statuses</option>
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+              </select>
+
+              <!-- Bulk Action menu (disabled by default) -->
+              <div class="dropdown-container" id="bulk-actions-container" style="display: none;">
+                <button class="btn btn-secondary" id="bulk-actions-btn">
+                  Bulk Actions <span class="badge badge-info" id="bulk-count" style="margin-left: 0.25rem;">0</span> <i data-lucide="chevron-down" style="width:14px;"></i>
+                </button>
+                <div class="dropdown-menu" style="width: 180px;">
+                  <button class="dropdown-item" id="bulk-active" style="color:var(--success);"><i data-lucide="check"></i> Mark Active</button>
+                  <button class="dropdown-item" id="bulk-inactive" style="color:var(--warning);"><i data-lucide="slash"></i> Mark Inactive</button>
+                  <button class="dropdown-item" id="bulk-delete" style="color:var(--danger);"><i data-lucide="trash-2"></i> Delete Selected</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Users Table -->
+        <div class="table-responsive">
+          <table class="table" id="users-table">
+            <thead>
+              <tr>
+                <th style="width: 40px;"><input type="checkbox" id="select-all-users" class="table-checkbox"></th>
+                <th style="cursor: pointer;" data-sort="name">User Name <i data-lucide="arrow-up-down" style="width: 12px; height: 12px; margin-left: 4px;"></i></th>
+                <th style="cursor: pointer;" data-sort="role">Role <i data-lucide="arrow-up-down" style="width: 12px; height: 12px; margin-left: 4px;"></i></th>
+                <th style="cursor: pointer;" data-sort="status">Status <i data-lucide="arrow-up-down" style="width: 12px; height: 12px; margin-left: 4px;"></i></th>
+                <th style="cursor: pointer;" data-sort="joinDate">Joined Date <i data-lucide="arrow-up-down" style="width: 12px; height: 12px; margin-left: 4px;"></i></th>
+                <th style="text-align: right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="users-table-body">
+              <!-- Rendered dynamically -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination">
+          <div style="font-size: 0.85rem; color: var(--text-secondary);" id="pagination-info">
+            Showing 1-10 of 100 users
+          </div>
+          <div class="pagination-numbers" id="pagination-controls">
+            <!-- Buttons dynamically generated -->
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Modals Section -->
+
+  <!-- Add User Modal -->
+  <div class="modal-overlay" id="add-user-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 class="modal-title">Add New User</h3>
+        <button class="btn btn-icon close-modal"><i data-lucide="x"></i></button>
+      </div>
+      <form id="add-user-form">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label" for="add-name">Full Name</label>
+            <input type="text" id="add-name" class="form-control" required placeholder="Olivia Ryhe">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="add-email">Email Address</label>
+            <input type="email" id="add-email" class="form-control" required placeholder="olivia@example.com">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="add-role">System Role</label>
+            <select id="add-role" class="form-control">
+              <option value="Administrator">Administrator</option>
+              <option value="Editor">Editor</option>
+              <option value="Viewer">Viewer</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="add-status">Status</label>
+            <select id="add-status" class="form-control">
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="add-avatar">Avatar URL (Optional)</label>
+            <input type="url" id="add-avatar" class="form-control" placeholder="https://example.com/avatar.jpg">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary close-modal">Cancel</button>
+          <button type="submit" class="btn btn-primary">Create User</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Edit User Modal -->
+  <div class="modal-overlay" id="edit-user-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 class="modal-title">Edit User Details</h3>
+        <button class="btn btn-icon close-modal"><i data-lucide="x"></i></button>
+      </div>
+      <form id="edit-user-form">
+        <input type="hidden" id="edit-id">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label" for="edit-name">Full Name</label>
+            <input type="text" id="edit-name" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="edit-email">Email Address</label>
+            <input type="email" id="edit-email" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="edit-role">System Role</label>
+            <select id="edit-role" class="form-control">
+              <option value="Administrator">Administrator</option>
+              <option value="Editor">Editor</option>
+              <option value="Viewer">Viewer</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="edit-status">Status</label>
+            <select id="edit-status" class="form-control">
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary close-modal">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- View User Details Modal -->
+  <div class="modal-overlay" id="view-user-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 class="modal-title">User Account Overview</h3>
+        <button class="btn btn-icon close-modal"><i data-lucide="x"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="flex-column" style="align-items: center; text-align: center; gap: 1rem; padding: 1rem 0;">
+          <img src="" id="view-avatar" class="avatar" style="width: 80px; height: 80px; border-radius: var(--radius-full);">
+          <div>
+            <h4 id="view-name" style="font-size: 1.2rem; font-weight: 700;">Olivia Ryhe</h4>
+            <p id="view-email" style="color: var(--text-secondary); font-size: 0.9rem;">olivia@example.com</p>
+          </div>
+          <div class="flex-row">
+            <span class="badge badge-info" id="view-role">Administrator</span>
+            <span class="badge badge-success" id="view-status">Active</span>
+          </div>
+        </div>
+        <div style="border-top: 1px solid var(--border-color); padding-top: 1.25rem; margin-top: 0.5rem;">
+          <div class="flex-between" style="padding: 0.5rem 0;">
+            <span style="color: var(--text-muted); font-size: 0.85rem;">Account Join Date</span>
+            <span style="font-size: 0.85rem; font-weight: 600;" id="view-join-date">January 12, 2025</span>
+          </div>
+          <div class="flex-between" style="padding: 0.5rem 0;">
+            <span style="color: var(--text-muted); font-size: 0.85rem;">Assigned User ID</span>
+            <span style="font-size: 0.85rem; font-family: var(--font-mono); font-weight: 600;" id="view-uid">usr-1</span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary close-modal">Close Window</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Import Modal -->
+  <div class="modal-overlay" id="import-users-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 class="modal-title">Import Users Data</h3>
+        <button class="btn btn-icon close-modal"><i data-lucide="x"></i></button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.25rem;">Upload a CSV file containing columns: Name, Email, Role, Status. Avatar URLs are computed dynamically.</p>
+        <div style="border: 2px dashed var(--border-color); border-radius: var(--radius-md); padding: 2rem; text-align: center; cursor: pointer; transition: border-color var(--transition-fast);" id="drag-drop-import-area">
+          <i data-lucide="upload-cloud" style="width: 40px; height: 40px; color: var(--text-muted); margin-bottom: 0.5rem;"></i>
+          <p style="font-weight: 600; font-size: 0.9rem;">Drag and drop file here, or click to upload</p>
+          <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;">Supports only standard CSV sheets</p>
+          <input type="file" id="import-file-input" style="display: none;" accept=".csv">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary close-modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main scripts -->
+  <script type="module" src="app.js"></script>
+  <script type="module" src="users.js"></script>
+</body>
+</html>

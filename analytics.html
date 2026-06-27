@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Analytics Reports - Antigravity Admin</title>
+  <meta name="description" content="Detailed analytics dashboard with revenue charts, customer growth graphs, traffic breakdown, and conversion rates.">
+  <link rel="stylesheet" href="variables.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="components.css">
+  <link rel="stylesheet" href="animations.css">
+  <link rel="stylesheet" href="responsive.css">
+  <!-- Lucide Icons CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/lucide/dist/umd/lucide.min.js"></script>
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Sidebar Placeholder -->
+    <div id="sidebar-placeholder"></div>
+
+    <main class="app-content">
+      <!-- Header Placeholder -->
+      <div id="header-placeholder"></div>
+
+      <div class="page-body animate-fade-in-up">
+        <!-- Header Title -->
+        <div class="flex-between">
+          <div>
+            <h2 style="font-size: 1.5rem; font-weight: 700;">Analytics Center</h2>
+            <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 0.25rem;">Assess platform key performance indicators (KPIs), traffic pathways, and revenue metrics.</p>
+          </div>
+          <div class="flex-row">
+            <!-- Period Select -->
+            <select id="analytics-period-select" class="form-control" style="width: 180px; cursor: pointer; font-weight: 600;">
+              <option value="yearly">Yearly Report (2026)</option>
+              <option value="monthly">Monthly Report (June)</option>
+            </select>
+            <button class="btn btn-secondary" onclick="window.print();">
+              <i data-lucide="printer"></i> Print Report
+            </button>
+          </div>
+        </div>
+
+        <!-- Analytical KPI Metric Cards -->
+        <div class="grid-4">
+          <div class="card stat-card">
+            <div class="stat-header">
+              <span>Conversion Rate</span>
+              <div class="stat-icon" style="color: var(--primary);"><i data-lucide="activity"></i></div>
+            </div>
+            <div class="stat-value" id="analytic-conversion">3.24%</div>
+            <div class="stat-change up">
+              <i data-lucide="trending-up" style="width: 14px; height: 14px;"></i>
+              <span>+0.4% vs last period</span>
+            </div>
+          </div>
+
+          <div class="card stat-card">
+            <div class="stat-header">
+              <span>Average Order Value</span>
+              <div class="stat-icon" style="color: var(--success); background-color: var(--success-soft);"><i data-lucide="shopping-bag"></i></div>
+            </div>
+            <div class="stat-value" id="analytic-aov">$0.00</div>
+            <div class="stat-change up">
+              <i data-lucide="trending-up" style="width: 14px; height: 14px;"></i>
+              <span>+$5.12 vs last period</span>
+            </div>
+          </div>
+
+          <div class="card stat-card">
+            <div class="stat-header">
+              <span>Bounce Rate</span>
+              <div class="stat-icon" style="color: var(--danger); background-color: var(--danger-soft);"><i data-lucide="external-link"></i></div>
+            </div>
+            <div class="stat-value" id="analytic-bounce">41.8%</div>
+            <div class="stat-change down">
+              <i data-lucide="trending-down" style="width: 14px; height: 14px;"></i>
+              <span>-1.2% vs last period</span>
+            </div>
+          </div>
+
+          <div class="card stat-card">
+            <div class="stat-header">
+              <span>Active Ad Campaigns Spend</span>
+              <div class="stat-icon" style="color: var(--info); background-color: var(--info-soft);"><i data-lucide="trending-up"></i></div>
+            </div>
+            <div class="stat-value" id="analytic-spend">$1,240.00</div>
+            <div class="stat-change neutral">
+              <span>Optimized acquisition costs</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Charts Row 1: Line and Bar -->
+        <div class="grid-2">
+          <!-- Revenue Area Chart -->
+          <div class="card" style="min-height: 380px; display: flex; flex-direction: column;">
+            <div class="card-header">
+              <h3 class="card-title">Revenue Trajectory</h3>
+            </div>
+            <div style="flex: 1; min-height: 0; position: relative;">
+              <canvas id="chart-revenue-trajectory"></canvas>
+            </div>
+          </div>
+
+          <!-- Sales Conversion Bar Chart -->
+          <div class="card" style="min-height: 380px; display: flex; flex-direction: column;">
+            <div class="card-header">
+              <h3 class="card-title">Sales Conversion Quantities</h3>
+            </div>
+            <div style="flex: 1; min-height: 0; position: relative;">
+              <canvas id="chart-sales-bar"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Charts Row 2: Customer Growth and Traffic -->
+        <div class="grid-3">
+          <!-- Customer Growth Line Chart -->
+          <div class="card" style="grid-column: span 2; min-height: 350px; display: flex; flex-direction: column;">
+            <div class="card-header">
+              <h3 class="card-title">Customer Acquisition Curve</h3>
+            </div>
+            <div style="flex: 1; min-height: 0; position: relative;">
+              <canvas id="chart-growth-curve"></canvas>
+            </div>
+          </div>
+
+          <!-- Traffic Pie Chart -->
+          <div class="card" style="min-height: 350px; display: flex; flex-direction: column;">
+            <div class="card-header">
+              <h3 class="card-title">Acquisition Demographics</h3>
+            </div>
+            <div style="flex: 1; min-height: 0; position: relative;">
+              <canvas id="chart-traffic-pie"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Main scripts -->
+  <script type="module" src="app.js"></script>
+  <script type="module" src="analytics.js"></script>
+</body>
+</html>

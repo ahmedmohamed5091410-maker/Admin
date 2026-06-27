@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Customers - Antigravity Admin</title>
+  <meta name="description" content="Review customer directory, analyze lifetime value, and view purchase history logs.">
+  <link rel="stylesheet" href="variables.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="components.css">
+  <link rel="stylesheet" href="animations.css">
+  <link rel="stylesheet" href="responsive.css">
+  <!-- Lucide Icons CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/lucide/dist/umd/lucide.min.js"></script>
+  <style>
+    /* Customer Grid styling */
+    .customer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+    
+    .customer-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      position: relative;
+    }
+    
+    /* Purchase Drawer Slide out layout */
+    .purchase-drawer {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 400px;
+      height: 100vh;
+      background-color: var(--card-bg);
+      border-left: 1px solid var(--border-color);
+      box-shadow: var(--shadow-xl);
+      z-index: 1010;
+      transform: translateX(100%);
+      transition: transform var(--transition-normal);
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .purchase-drawer.active {
+      transform: translateX(0);
+    }
+    
+    @media (max-width: 480px) {
+      .purchase-drawer { width: 100%; }
+    }
+    
+    .drawer-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: rgba(15, 23, 42, 0.4);
+      backdrop-filter: blur(2px);
+      z-index: 1005;
+      display: none;
+    }
+    .drawer-overlay.active {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Sidebar Placeholder -->
+    <div id="sidebar-placeholder"></div>
+
+    <main class="app-content">
+      <!-- Header Placeholder -->
+      <div id="header-placeholder"></div>
+
+      <div class="page-body animate-fade-in-up">
+        <!-- Header Title -->
+        <div>
+          <h2 style="font-size: 1.5rem; font-weight: 700;">Customer Relations (CRM)</h2>
+          <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 0.25rem;">Monitor customer engagement logs, inspect purchase patterns, and evaluate lifetime value metrics.</p>
+        </div>
+
+        <!-- CRM Stat Cards -->
+        <div class="grid-3">
+          <div class="card stat-card">
+            <div class="stat-header">
+              <span>Total Customer Base</span>
+              <div class="stat-icon" style="color: var(--primary);"><i data-lucide="users"></i></div>
+            </div>
+            <div class="stat-value" id="crm-total-customers">0</div>
+            <p style="font-size: 0.75rem; color: var(--text-muted);">Registered accounts and active checkouts.</p>
+          </div>
+
+          <div class="card stat-card">
+            <div class="stat-header">
+              <span>Average Customer Value (LTV)</span>
+              <div class="stat-icon" style="color: var(--success); background-color: var(--success-soft);"><i data-lucide="dollar-sign"></i></div>
+            </div>
+            <div class="stat-value" id="crm-avg-ltv">$0.00</div>
+            <p style="font-size: 0.75rem; color: var(--text-muted);">Aggregate purchases divided by customer count.</p>
+          </div>
+
+          <div class="card stat-card">
+            <div class="stat-header">
+              <span>Customer Retention Rate</span>
+              <div class="stat-icon" style="color: var(--warning); background-color: var(--warning-soft);"><i data-lucide="refresh-cw"></i></div>
+            </div>
+            <div class="stat-value" id="crm-retention-rate">0.0%</div>
+            <p style="font-size: 0.75rem; color: var(--text-muted);">Percentage of returning buyers month-over-month.</p>
+          </div>
+        </div>
+
+        <!-- Toolbar -->
+        <div class="card" style="padding: 1rem;">
+          <div class="flex-between" style="flex-wrap: wrap; gap: 1rem;">
+            <div class="search-box" style="flex: 1; min-width: 250px;">
+              <i data-lucide="search"></i>
+              <input type="text" id="customers-search" class="form-control" placeholder="Search by name or email...">
+            </div>
+            
+            <select id="customers-sort" class="form-control" style="width: 200px; cursor: pointer;">
+              <option value="name">Sort by Name</option>
+              <option value="totalSpent">Sort by LTV (High to Low)</option>
+              <option value="orderCount">Sort by Order Count</option>
+              <option value="joinDate">Sort by Joined Date</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Customer Cards Grid -->
+        <div class="customer-grid" id="customers-cards-container">
+          <!-- Rendered dynamically -->
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination">
+          <div style="font-size: 0.85rem; color: var(--text-secondary);" id="pagination-info">
+            Showing 1-8 of 20 customers
+          </div>
+          <div class="pagination-numbers" id="pagination-controls">
+            <!-- Buttons dynamically generated -->
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Side Drawer Container for Customer Timeline History -->
+  <div class="drawer-overlay" id="crm-drawer-overlay"></div>
+  <div class="purchase-drawer" id="crm-purchase-drawer">
+    <div class="modal-header" style="flex-shrink: 0;">
+      <h3 class="modal-title">Customer Transactions</h3>
+      <button class="btn btn-icon" id="close-drawer-btn"><i data-lucide="x"></i></button>
+    </div>
+    
+    <div class="flex-column" style="padding: 1.5rem; border-bottom: 1px solid var(--border-color); align-items: center; text-align: center; gap: 0.5rem; flex-shrink: 0;">
+      <img src="" id="drawer-avatar" class="avatar" style="width: 64px; height: 64px;">
+      <div>
+        <h4 id="drawer-name" style="font-weight: 700; font-size: 1.1rem;">Olivia Ryhe</h4>
+        <p id="drawer-email" style="font-size: 0.8rem; color: var(--text-muted);">olivia@example.com</p>
+      </div>
+    </div>
+    
+    <div style="flex: 1; overflow-y: auto; padding: 1.5rem;">
+      <h5 style="font-size: 0.8rem; font-weight: 600; text-transform: uppercase; color: var(--text-muted); margin-bottom: 1rem;">Order History</h5>
+      <div class="timeline" id="drawer-purchase-timeline">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Main scripts -->
+  <script type="module" src="app.js"></script>
+  <script type="module" src="customers.js"></script>
+</body>
+</html>

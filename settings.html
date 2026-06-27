@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Application Settings - Antigravity Admin</title>
+  <meta name="description" content="Configure application themes, language preferences, email configurations, and profile privacy levels.">
+  <link rel="stylesheet" href="variables.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="components.css">
+  <link rel="stylesheet" href="animations.css">
+  <link rel="stylesheet" href="responsive.css">
+  <!-- Lucide Icons CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/lucide/dist/umd/lucide.min.js"></script>
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Sidebar Placeholder -->
+    <div id="sidebar-placeholder"></div>
+
+    <main class="app-content">
+      <!-- Header Placeholder -->
+      <div id="header-placeholder"></div>
+
+      <div class="page-body animate-fade-in-up">
+        <!-- Header Title -->
+        <div>
+          <h2 style="font-size: 1.5rem; font-weight: 700;">System Settings</h2>
+          <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 0.25rem;">Optimize interface preferences, configure alert schedules, and review security settings.</p>
+        </div>
+
+        <div class="grid-2">
+          <!-- Left settings panel -->
+          <div class="flex-column" style="gap: 1.5rem;">
+            <!-- General Settings -->
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">General Preferences</h3>
+              </div>
+              <form id="settings-general-form">
+                <div class="form-group">
+                  <label class="form-label" for="settings-theme">Visual Appearance Theme</label>
+                  <select id="settings-theme" class="form-control" style="cursor: pointer;">
+                    <option value="light">Light Appearance</option>
+                    <option value="dark">Dark Appearance</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="settings-lang">Language Preference</label>
+                  <select id="settings-lang" class="form-control" style="cursor: pointer;">
+                    <option value="en">English (US)</option>
+                    <option value="es">Español (ES)</option>
+                    <option value="fr">Français (FR)</option>
+                    <option value="de">Deutsch (DE)</option>
+                  </select>
+                </div>
+                <div style="text-align: right; margin-top: 1rem;">
+                  <button type="submit" class="btn btn-primary">Save General Settings</button>
+                </div>
+              </form>
+            </div>
+
+            <!-- Security Preferences -->
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Security & Privacy</h3>
+              </div>
+              <form id="settings-security-form">
+                <div class="flex-between" style="padding: 0.75rem 0; border-bottom: 1px solid var(--border-color);">
+                  <div>
+                    <div style="font-weight: 600; font-size: 0.9rem;">Two-Factor Authentication (2FA)</div>
+                    <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">Require security passcode validation upon login.</div>
+                  </div>
+                  <label class="switch">
+                    <input type="checkbox" id="settings-2fa">
+                    <span class="slider"></span>
+                  </label>
+                </div>
+
+                <div class="form-group" style="margin-top: 1.25rem;">
+                  <label class="form-label" for="settings-timeout">Inactive Session Expiration</label>
+                  <select id="settings-timeout" class="form-control" style="cursor: pointer;">
+                    <option value="15">15 Minutes</option>
+                    <option value="30">30 Minutes</option>
+                    <option value="60">60 Minutes</option>
+                    <option value="120">2 Hours</option>
+                  </select>
+                </div>
+                <div style="text-align: right; margin-top: 1rem;">
+                  <button type="submit" class="btn btn-primary">Save Security Settings</button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- Right settings panel -->
+          <div class="flex-column" style="gap: 1.5rem;">
+            <!-- Notification Settings -->
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Alert & Notification Schedules</h3>
+              </div>
+              <form id="settings-notifs-form">
+                <div class="flex-between" style="padding: 0.75rem 0; border-bottom: 1px solid var(--border-color);">
+                  <div>
+                    <div style="font-weight: 600; font-size: 0.9rem;">Email Notifications</div>
+                    <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">Receive daily transactional summaries and security reports.</div>
+                  </div>
+                  <label class="switch">
+                    <input type="checkbox" id="settings-notif-email">
+                    <span class="slider"></span>
+                  </label>
+                </div>
+
+                <div class="flex-between" style="padding: 0.75rem 0; border-bottom: 1px solid var(--border-color);">
+                  <div>
+                    <div style="font-weight: 600; font-size: 0.9rem;">Browser Toasts</div>
+                    <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">Receive live push messages in app viewport.</div>
+                  </div>
+                  <label class="switch">
+                    <input type="checkbox" id="settings-notif-browser">
+                    <span class="slider"></span>
+                  </label>
+                </div>
+
+                <div class="flex-between" style="padding: 0.75rem 0;">
+                  <div>
+                    <div style="font-weight: 600; font-size: 0.9rem;">Marketing Announcements</div>
+                    <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">Stay informed on feature launches and updates.</div>
+                  </div>
+                  <label class="switch">
+                    <input type="checkbox" id="settings-notif-marketing">
+                    <span class="slider"></span>
+                  </label>
+                </div>
+                <div style="text-align: right; margin-top: 1rem;">
+                  <button type="submit" class="btn btn-primary">Save Notification Settings</button>
+                </div>
+              </form>
+            </div>
+
+            <!-- Platform Diagnostic Info -->
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">System Status Diagnostics</h3>
+              </div>
+              <div class="flex-column" style="gap: 0.75rem;">
+                <div class="flex-between" style="font-size: 0.85rem;">
+                  <span style="color: var(--text-secondary);">Application Version</span>
+                  <span style="font-weight: 600;">v1.4.2-enterprise</span>
+                </div>
+                <div class="flex-between" style="font-size: 0.85rem;">
+                  <span style="color: var(--text-secondary);">Server Connectivity</span>
+                  <span class="badge badge-success">Operational</span>
+                </div>
+                <div class="flex-between" style="font-size: 0.85rem;">
+                  <span style="color: var(--text-secondary);">Database Connection Pool</span>
+                  <span style="font-weight: 600; color: var(--success);">Online (4ms latency)</span>
+                </div>
+                <div class="flex-between" style="font-size: 0.85rem;">
+                  <span style="color: var(--text-secondary);">LocalStorage Cache Usage</span>
+                  <span style="font-weight: 600;" id="cache-usage-metric">0.12 KB</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Main scripts -->
+  <script type="module" src="app.js"></script>
+  <script type="module" src="settings.js"></script>
+</body>
+</html>
